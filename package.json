@@ -1,0 +1,19 @@
+{
+  "name": "nba-stats",
+  "version": "1.0.0",
+  "description": "provides data about NBA players",
+  "main": "server.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eddinos/nba-stats-api.git"
+  },
+  "author": "Eddine Djerboua",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Eddinos/nba-stats-api/issues"
+  },
+  "homepage": "https://github.com/Eddinos/nba-stats-api#readme"
+}
