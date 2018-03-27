@@ -4,6 +4,10 @@ var mongoose = require('mongoose');
 var app = express();
 import bodyParser from 'body-parser';
 import Player from './mongoose/player'
+import schema from './graphql/Schema/Schema'
+
+import {graphql} from 'graphql'
+import graphqlHTTP from 'express-graphql';
 
 mongoose.connect('mongodb://localhost:27017/NBA-stats')
 var db = mongoose.connection;
@@ -38,3 +42,8 @@ newPlayer.save((err,result) => {
   res.json({success: true, msg: 'Successful created new player.'});
  })
 })
+
+app.use('/graphql', graphqlHTTP (req => ({
+ schema
+ //,graphiql:true
+})))

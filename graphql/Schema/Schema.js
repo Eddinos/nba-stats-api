@@ -27,7 +27,7 @@ var playerType = new GraphQLObjectType({
   description: 'basketball player',
   fields: () => ({
     firstName: {
-      type: (GraphQLString),
+      type: GraphQLString,
       description: 'First name of the player',
     },
     lastName: {
@@ -50,14 +50,23 @@ var schema = new GraphQLSchema({
         args: {
           firstName: {
             name: 'firstName',
-            type: new GraphQLNonNull(GraphQLString)
+            type: GraphQLString
+          },
+          lastName: {
+            name: 'lastName',
+            type: GraphQLString
+          },
+          jersey: {
+            name: 'jersey',
+            type: GraphQLInt
           }
         },
-        resolve: (root, {firstName}, source, fieldASTs) => {
+        resolve: (root, {firstName, lastName, jersey}, source, fieldASTs) => {
           var projections = getProjection(fieldASTs);
+          let query = querifyArgs({firstName, lastName, jersey});
           var foundItems = new Promise((resolve, reject) => {
-              PlayerMongo.find({firstName}, projections,(err, todos) => {
-                  err ? reject(err) : resolve(todos)
+              PlayerMongo.find(query, projections,(err, players) => {
+                  err ? reject(err) : resolve(players)
               })
           })
 
@@ -68,5 +77,13 @@ var schema = new GraphQLSchema({
   })
 
 });
+
+const querifyArgs = function (args) {
+  let query = {};
+  for (let key in args) {
+    if (args[key] != null) query[key] = args[key]
+  }
+  return query;
+}
 
 export default schema;
