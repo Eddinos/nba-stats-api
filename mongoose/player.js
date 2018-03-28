@@ -5,7 +5,12 @@ var Schema = mongoose.Schema;
 var PlayerSchema = new Schema({
     firstName: String,
     lastName: String,
-    jersey: Number
+    jersey: Number,
+    id: {
+      type: Number,
+      required: true,
+      unique: true
+    }
 }, {collection:"Players"});
 // we need to create a model using it
 var Player = mongoose.model('Player', PlayerSchema);
