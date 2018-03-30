@@ -1,9 +1,14 @@
 import axios from 'axios'
 import express from 'express'
-var router = express.Router()
+var routes = express.Router()
 import Player from '../../mongoose/player'
+import addPlayer from './addPlayer'
+import addTeam from './addTeam'
 
-router.get('/', (req, res, next) => {
+routes.use('/player', addPlayer);
+routes.use('/team', addTeam);
+
+routes.get('/', (req, res, next) => {
   axios.get('http://www.nba.com/players/active_players.json')
   .then(response => {
     let playersToAdd = simplifyPlayers(response.data);
@@ -30,4 +35,4 @@ const simplifyPlayers = function (playersList) {
   })
 }
 
-export default router;
+export default routes;
