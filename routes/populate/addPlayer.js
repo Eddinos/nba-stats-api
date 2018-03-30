@@ -3,7 +3,6 @@ var router = express.Router()
 import Player from '../../mongoose/player'
 
 router.post('/', (req, res) => {
- // Insert into TodoList Collection
  var newPlayer = new Player({
   firstName: req.body.firstName,
   lastName: req.body.lastName,

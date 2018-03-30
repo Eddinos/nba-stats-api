@@ -2,7 +2,8 @@ import express from 'express'
 var routes = express.Router()
 import {graphql} from 'graphql'
 import graphqlHTTP from 'express-graphql'
-import schema from '../graphql/Schema/playerSchema'
+import playerSchema from '../graphql/Schema/playerSchema'
+import teamSchema from '../graphql/Schema/teamSchema'
 import populate from './populate'
 
 
@@ -10,8 +11,13 @@ routes.get('/', (req,res)=>{
  res.send('This is NBA-stats-api')
 })
 
-routes.use('/graphql', graphqlHTTP (req => ({
- schema
+routes.use('/player', graphqlHTTP (req => ({
+ schema: playerSchema
+ //,graphiql:true
+})))
+
+routes.use('/team', graphqlHTTP (req => ({
+ schema: teamSchema
  //,graphiql:true
 })))
 

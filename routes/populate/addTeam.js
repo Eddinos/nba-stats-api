@@ -3,7 +3,6 @@ var router = express.Router()
 import Team from '../../mongoose/team'
 
 router.post('/', (req, res) => {
- // Insert into TodoList Collection
  var newTeam = new Team({
   fullName: req.body.fullName,
   tricode: req.body.tricode,
