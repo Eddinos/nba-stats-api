@@ -6,6 +6,7 @@ var PlayerSchema = new Schema({
     firstName: String,
     lastName: String,
     jersey: Number,
+    fullName: String,
     id: {
       type: Number,
       required: true,
