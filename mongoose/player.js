@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+import teamSchema from './team';
 
 var Schema = mongoose.Schema;
 // create a schema
@@ -7,6 +8,8 @@ var PlayerSchema = new Schema({
     lastName: String,
     jersey: Number,
     fullName: String,
+    img: String,
+    teamTricode: String,
     id: {
       type: Number,
       required: true,

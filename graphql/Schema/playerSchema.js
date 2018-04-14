@@ -9,6 +9,8 @@ import {
 } from 'graphql/type';
 
 import PlayerMongo from '../../mongoose/player'
+import TeamMongo from '../../mongoose/team'
+import {teamType} from './teamSchema'
 
 /**
  * generate projection object for mongoose
@@ -41,6 +43,29 @@ var playerType = new GraphQLObjectType({
     fullName: {
       type: GraphQLString,
       description: 'first and lastname of a player'
+    },
+    img: {
+      type: GraphQLString,
+      description: 'url of player portrait'
+    },
+    team: {
+      type: teamType,
+      args: {
+        tricode: {
+          type: GraphQLString
+        }
+      },
+      resolve: (player, args, source, fieldASTs) => {
+        var projections = getProjection(fieldASTs);
+        args.tricode = player.teamTricode;
+        let query = querifyArgs(args);
+        var foundItems = new Promise((resolve, reject) => {
+            TeamMongo.findOne(query, projections,(err, teams) => {
+                err ? reject(err) : resolve(teams)
+            })
+        })
+        return foundItems
+      }
     }
   })
 });
@@ -67,18 +92,24 @@ var schema = new GraphQLSchema({
           fullName: {
             name: 'fullName',
             type: GraphQLString
+          },
+          teamTricode: {
+            name: 'teamTricode',
+            type: GraphQLString
           }
         },
-        resolve: (root, {firstName, lastName, jersey, fullName}, source, fieldASTs) => {
+        resolve: (root, args = {firstName, lastName, jersey, fullName, img, team}, source, fieldASTs) => {
           var projections = getProjection(fieldASTs);
-          let query = querifyArgs({firstName, lastName, jersey, fullName});
-          var foundItems = new Promise((resolve, reject) => {
+          projections.teamTricode = projections.team;
+          let query = querifyArgs(args);
+          var foundPlayers = new Promise((resolve, reject) => {
               PlayerMongo.find(query, projections,(err, players) => {
-                  err ? reject(err) : resolve(players)
+                  err ? reject(err)
+                  : resolve(players);
               })
           })
 
-          return foundItems
+          return foundPlayers
         }
       }
     }
@@ -86,10 +117,22 @@ var schema = new GraphQLSchema({
 
 });
 
+const funktion = function (players, resolve) {
+  players.forEach(p => {
+    if (p.teamTricode) {
+      TeamMongo.find({tricode: p.teamTricode}, (err, teams) => {
+        p.team = teams[0]
+      })
+    }
+  }).then(()=>resolve(players))
+
+}
+
 const querifyArgs = function (args) {
   let query = {};
   for (let key in args) {
-    if (args[key] != null) query[key] = new RegExp(args[key], 'i')
+    if (args[key] != null && typeof args[key] === 'string') query[key] = new RegExp(args[key], 'i')
+    else query[key] = args[key]
   }
   return query;
 }

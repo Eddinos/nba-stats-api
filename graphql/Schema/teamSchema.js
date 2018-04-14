@@ -22,7 +22,7 @@ export function getProjection (fieldASTs) {
   }, {});
 }
 
-var teamType = new GraphQLObjectType({
+const teamType = new GraphQLObjectType({
   name: 'team',
   description: 'NBA team',
   fields: () => ({
@@ -33,6 +33,7 @@ var teamType = new GraphQLObjectType({
     tricode: {
       type: GraphQLString,
       description: 'three letters code',
+      resolve: t => t.tricode
     },
     city: {
       type: GraphQLString,
@@ -103,3 +104,4 @@ const querifyArgs = function (args) {
 }
 
 export default schema;
+export {teamType};

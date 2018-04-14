@@ -32,6 +32,7 @@ const simplifyPlayers = function (playersList) {
       fullName: `${player.firstName} ${player.lastName}`,
       jersey: player.jersey,
       id: player.personId,
+      teamTricode: player.teamData.tricode,
       img: `https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${player.personId}.png`
     }
   })

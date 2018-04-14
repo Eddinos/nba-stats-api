@@ -12,13 +12,13 @@ routes.get('/', (req,res)=>{
 })
 
 routes.use('/player', graphqlHTTP (req => ({
- schema: playerSchema
- //,graphiql:true
+ schema: playerSchema,
+ graphiql:true
 })))
 
 routes.use('/team', graphqlHTTP (req => ({
- schema: teamSchema
- //,graphiql:true
+ schema: teamSchema,
+ graphiql:true
 })))
 
 routes.use('/populate', populate)
