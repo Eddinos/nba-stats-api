@@ -8,21 +8,9 @@ import {
   GraphQLBoolean
 } from 'graphql/type';
 
-import PlayerMongo from '../../mongoose/player'
-import TeamMongo from '../../mongoose/team'
-import {teamType} from './teamSchema'
-
-/**
- * generate projection object for mongoose
- * @param  {Object} fieldASTs
- * @return {Project}
- */
-export function getProjection (fieldASTs) {
-  return fieldASTs.fieldNodes[0].selectionSet.selections.reduce((projections, selection) => {
-    projections[selection.name.value] = true;
-    return projections;
-  }, {});
-}
+import { teamType } from './teamSchema'
+import playerResolver from '../Resolvers/playerResolvers'
+import { teamPlayerResolver } from '../Resolvers/teamResolvers'
 
 var playerType = new GraphQLObjectType({
   name: 'player',
@@ -55,17 +43,7 @@ var playerType = new GraphQLObjectType({
           type: GraphQLString
         }
       },
-      resolve: (player, args, source, fieldASTs) => {
-        var projections = getProjection(fieldASTs);
-        args.tricode = player.teamTricode;
-        let query = querifyArgs(args);
-        var foundItems = new Promise((resolve, reject) => {
-            TeamMongo.findOne(query, projections,(err, teams) => {
-                err ? reject(err) : resolve(teams)
-            })
-        })
-        return foundItems
-      }
+      resolve: teamPlayerResolver
     }
   })
 });
@@ -98,43 +76,11 @@ var schema = new GraphQLSchema({
             type: GraphQLString
           }
         },
-        resolve: (root, args = {firstName, lastName, jersey, fullName, img, team}, source, fieldASTs) => {
-          var projections = getProjection(fieldASTs);
-          projections.teamTricode = projections.team;
-          let query = querifyArgs(args);
-          var foundPlayers = new Promise((resolve, reject) => {
-              PlayerMongo.find(query, projections,(err, players) => {
-                  err ? reject(err)
-                  : resolve(players);
-              })
-          })
-
-          return foundPlayers
-        }
+        resolve: playerResolver
       }
     }
   })
 
 });
-
-const funktion = function (players, resolve) {
-  players.forEach(p => {
-    if (p.teamTricode) {
-      TeamMongo.find({tricode: p.teamTricode}, (err, teams) => {
-        p.team = teams[0]
-      })
-    }
-  }).then(()=>resolve(players))
-
-}
-
-const querifyArgs = function (args) {
-  let query = {};
-  for (let key in args) {
-    if (args[key] != null && typeof args[key] === 'string') query[key] = new RegExp(args[key], 'i')
-    else query[key] = args[key]
-  }
-  return query;
-}
 
 export default schema;

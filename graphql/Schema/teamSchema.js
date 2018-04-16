@@ -8,19 +8,8 @@ import {
   GraphQLBoolean
 } from 'graphql/type';
 
-import TeamMongo from '../../mongoose/team'
+import teamResolver from '../Resolvers/teamResolvers'
 
-/**
- * generate projection object for mongoose
- * @param  {Object} fieldASTs
- * @return {Project}
- */
-export function getProjection (fieldASTs) {
-  return fieldASTs.fieldNodes[0].selectionSet.selections.reduce((projections, selection) => {
-    projections[selection.name.value] = true;
-    return projections;
-  }, {});
-}
 
 const teamType = new GraphQLObjectType({
   name: 'team',
@@ -78,30 +67,12 @@ var schema = new GraphQLSchema({
             type: GraphQLString
           }
         },
-        resolve: (root, {fullName, tricode, city, conference, division}, source, fieldASTs) => {
-          var projections = getProjection(fieldASTs);
-          let query = querifyArgs({fullName, tricode, city, conference, division});
-          var foundItems = new Promise((resolve, reject) => {
-              TeamMongo.find(query, projections,(err, players) => {
-                  err ? reject(err) : resolve(players)
-              })
-          })
-
-          return foundItems
-        }
+        resolve: teamResolver
       }
     }
   })
 
 });
-
-const querifyArgs = function (args) {
-  let query = {};
-  for (let key in args) {
-    if (args[key] != null) query[key] = args[key]
-  }
-  return query;
-}
 
 export default schema;
 export {teamType};
