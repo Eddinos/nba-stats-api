@@ -4,6 +4,7 @@ var routes = express.Router()
 import Player from '../../mongoose/player'
 import addPlayer from './addPlayer'
 import addTeam from './addTeam'
+import simplifyPlayers from '../Utils/simplifyPlayers'
 
 routes.use('/player', addPlayer);
 routes.use('/team', addTeam);
@@ -23,19 +24,5 @@ routes.get('/', (req, res, next) => {
   })
   .catch(err => console.log(err));
 })
-
-const simplifyPlayers = function (playersList) {
-  return playersList.map(player => {
-    return {
-      firstName: player.firstName,
-      lastName: player.lastName,
-      fullName: `${player.firstName} ${player.lastName}`,
-      jersey: player.jersey,
-      id: player.personId,
-      teamTricode: player.teamData.tricode,
-      img: `https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${player.personId}.png`
-    }
-  })
-}
 
 export default routes;

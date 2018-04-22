@@ -10,6 +10,11 @@ var PlayerSchema = new Schema({
     fullName: String,
     img: String,
     teamTricode: String,
+    isAllStar: Boolean,
+    position: String,
+    heightFeet: Number,
+    heightInches: Number,
+    weightPounds: Number,
     id: {
       type: Number,
       required: true,

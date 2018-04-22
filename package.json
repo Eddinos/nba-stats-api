@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "echo TODO",
-    "dev": "babel-node server.js --inspect"
+    "dev": "babel-node src/server.js --inspect",
+    "build": "babel -d build/ src/ -s",
+    "start": "node build/server.js --debug"
   },
   "repository": {
     "type": "git",
