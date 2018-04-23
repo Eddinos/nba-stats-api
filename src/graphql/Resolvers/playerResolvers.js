@@ -1,6 +1,7 @@
 import getProjection from './getProjection'
 import { querifyArgs } from '../Utils/query'
 import PlayerMongo from '../../mongoose/player'
+import { feetToMeters, poundsToKg } from '../Utils/conversions'
 
 
 const playerResolver = (root, args, source, fieldASTs) => {
@@ -18,4 +19,25 @@ const playerResolver = (root, args, source, fieldASTs) => {
   return foundPlayers
 }
 
+const heightResolver = (player, args) => {
+  let language = args.language || 'en-US'
+  switch (language) {
+    case 'en-US':
+      return `${player.heightFeet}" ${player.heightInches}'`;
+    default:
+      return feetToMeters(player.heightFeet, player.heightInches).toFixed(2);
+  }
+}
+
+const weightResolver = (player, args) => {
+  let language = args.language || 'en-US'
+  switch (language) {
+    case 'en-US':
+      return player.weight;
+    default:
+      return Math.round(poundsToKg(player.weight));
+  }
+}
+
 export default playerResolver;
+export {heightResolver, weightResolver}

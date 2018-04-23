@@ -11,7 +11,7 @@ const simplifyPlayers = function (playersList) {
       position: player.posExpanded,
       heightFeet: player.heightFeet,
       heightInches: player.heightInches,
-      weightPounds: player.weightPounds,
+      weight: player.weightPounds,
       img: `https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${player.personId}.png`
     }
   })

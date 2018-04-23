@@ -14,7 +14,7 @@ var PlayerSchema = new Schema({
     position: String,
     heightFeet: Number,
     heightInches: Number,
-    weightPounds: Number,
+    weight: Number,
     id: {
       type: Number,
       required: true,

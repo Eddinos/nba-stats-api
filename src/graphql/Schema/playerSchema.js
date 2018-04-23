@@ -10,6 +10,7 @@ import {
 
 import { teamType } from './teamSchema'
 import playerResolver from '../Resolvers/playerResolvers'
+import { heightResolver, weightResolver } from '../Resolvers/playerResolvers'
 import { teamPlayerResolver } from '../Resolvers/teamResolvers'
 
 var playerType = new GraphQLObjectType({
@@ -53,17 +54,18 @@ var playerType = new GraphQLObjectType({
           description: 'Enable localization of height'
         }
       },
-      resolve: (player, args, source, fieldASTs) => {
-        let language = args.language || 'en-US'
-        switch (language) {
-          case 'en-US':
-            return `${player.heightFeet}" ${player.heightInches}'`;
-          default:
-            let feet = player.heightFeet * 30.48;
-            let inches = player.heightInches * 2.54;
-            return ((feet + inches) / 100).toFixed(2);
+      resolve: heightResolver
+    },
+    weight: {
+      type: GraphQLString,
+      description: `player's weight`,
+      args: {
+        language: {
+          type: GraphQLString,
+          description: 'enable localization of weight'
         }
-      }
+      },
+      resolve: weightResolver
     },
     team: {
       type: teamType,
