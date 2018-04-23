@@ -36,6 +36,35 @@ var playerType = new GraphQLObjectType({
       type: GraphQLString,
       description: 'url of player portrait'
     },
+    isAllStar: {
+      type: GraphQLBoolean,
+      description: 'whether or not the player was selected to play during the ASG'
+    },
+    position: {
+      type: GraphQLString,
+      description: `player's position`
+    },
+    height: {
+      type: GraphQLString,
+      description: `player's height`,
+      args: {
+        language: {
+          type: GraphQLString,
+          description: 'Enable localization of height'
+        }
+      },
+      resolve: (player, args, source, fieldASTs) => {
+        let language = args.language || 'en-US'
+        switch (language) {
+          case 'en-US':
+            return `${player.heightFeet}" ${player.heightInches}'`;
+          default:
+            let feet = player.heightFeet * 30.48;
+            let inches = player.heightInches * 2.54;
+            return ((feet + inches) / 100).toFixed(2);
+        }
+      }
+    },
     team: {
       type: teamType,
       args: {
@@ -73,6 +102,14 @@ var schema = new GraphQLSchema({
           },
           teamTricode: {
             name: 'teamTricode',
+            type: GraphQLString
+          },
+          isAllStar: {
+            name: 'isAllStar',
+            type: GraphQLBoolean
+          },
+          position: {
+            name: 'position',
             type: GraphQLString
           }
         },
