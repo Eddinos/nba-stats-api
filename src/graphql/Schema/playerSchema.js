@@ -5,6 +5,7 @@ import {
   GraphQLString,
   GraphQLList,
   GraphQLInt,
+  GraphQLFloat,
   GraphQLBoolean
 } from 'graphql/type';
 
@@ -26,7 +27,7 @@ var playerType = new GraphQLObjectType({
       description: 'Family name of the player',
     },
     jersey: {
-      type: GraphQLInt,
+      type: GraphQLString,
       description: 'usual jersey number'
     },
     fullName: {
@@ -46,7 +47,7 @@ var playerType = new GraphQLObjectType({
       description: `player's position`
     },
     height: {
-      type: GraphQLString,
+      type: GraphQLFloat,
       description: `player's height`,
       args: {
         language: {
@@ -57,7 +58,7 @@ var playerType = new GraphQLObjectType({
       resolve: heightResolver
     },
     weight: {
-      type: GraphQLString,
+      type: GraphQLFloat,
       description: `player's weight`,
       args: {
         language: {
@@ -96,7 +97,7 @@ var schema = new GraphQLSchema({
           },
           jersey: {
             name: 'jersey',
-            type: GraphQLInt
+            type: GraphQLString
           },
           fullName: {
             name: 'fullName',
