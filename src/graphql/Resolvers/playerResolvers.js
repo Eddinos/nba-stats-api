@@ -23,7 +23,7 @@ const heightResolver = (player, args) => {
   let language = args.language || 'en-US'
   switch (language) {
     case 'en-US':
-      return `${player.heightFeet}" ${player.heightInches}'`;
+      return `${player.heightFeet}' ${player.heightInches}"`;
     default:
       return feetToMeters(player.heightFeet, player.heightInches).toFixed(2);
   }

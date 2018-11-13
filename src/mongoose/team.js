@@ -12,7 +12,8 @@ var TeamSchema = new Schema({
       type: Number,
       required: true,
       unique: true
-    }
+    },
+    logo: String
 }, {collection:"Teams"});
 // we need to create a model using it
 var Team = mongoose.model('Team', TeamSchema);

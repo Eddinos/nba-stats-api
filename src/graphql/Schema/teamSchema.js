@@ -35,6 +35,10 @@ const teamType = new GraphQLObjectType({
     division: {
       type: GraphQLString,
       description: 'Division of the conference'
+    },
+    logo: {
+      type: GraphQLString,
+      description: 'Team logo'
     }
   })
 });
@@ -64,6 +68,10 @@ var schema = new GraphQLSchema({
           },
           division: {
             name: 'division',
+            type: GraphQLString
+          },
+          logo: {
+            name: 'logo',
             type: GraphQLString
           }
         },

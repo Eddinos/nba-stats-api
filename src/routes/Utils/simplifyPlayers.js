@@ -9,9 +9,9 @@ const simplifyPlayers = function (playersList) {
       teamTricode: player.teamData.tricode,
       isAllStar: player.isAllStar,
       position: player.posExpanded,
-      heightFeet: player.heightFeet,
-      heightInches: player.heightInches,
-      weight: player.weightPounds,
+      heightFeet: parseFloat(player.heightFeet) || 0,
+      heightInches: parseFloat(player.heightInches) || 0,
+      weight: parseFloat(player.weightPounds) || 0,
       img: `https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${player.personId}.png`
     }
   })

@@ -47,7 +47,7 @@ var playerType = new GraphQLObjectType({
       description: `player's position`
     },
     height: {
-      type: GraphQLFloat,
+      type: GraphQLString,
       description: `player's height`,
       args: {
         language: {
