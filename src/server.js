@@ -9,7 +9,7 @@ const DB_CONNECTION = process.env.NODE_ENV == 'production' ? `mongodb://${proces
 
 mongoose.connect(DB_CONNECTION);
 var db = mongoose.connection;
-db.on('error', ()=> {console.log( 'FAILED to connect to mongoose')})
+db.on('error', ()=> {console.log( 'FAILED to connect to mongoose', DB_CONNECTION)})
 db.once('open', () => {
  console.log( 'Connected to mongoose')
 })
