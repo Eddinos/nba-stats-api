@@ -5,7 +5,7 @@ var app = express();
 import routes from './routes'
 import bodyParser from 'body-parser';
 const PORT = process.env.PORT || 3000;
-const DB_CONNECTION = process.env.NODE_ENV == 'production' ? `mongodb://${process.env['db-user-name']}:${process.env['db-user-lemonade']}@ds123753.mlab.com:23753/nba-stats` : `mongodb://localhost:27017/NBA-stats`
+const DB_CONNECTION = process.env.NODE_ENV == 'production' ? `mongodb+srv://${process.env['db-user-name']}:${process.env['db-user-lemonade']}@nba-stats.e68ly.mongodb.net/<dbname>?retryWrites=true&w=majority` : `mongodb://localhost:27017/NBA-stats`
 
 mongoose.connect(DB_CONNECTION);
 var db = mongoose.connection;
