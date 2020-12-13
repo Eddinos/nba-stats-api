@@ -9,6 +9,7 @@ const playerResolver = (root, args, source, fieldASTs) => {
   if (projections.team) projections.teamTricode = projections.team;
   if (projections.height) projections.heightFeet = projections.heightInches = projections.height;
   let query = querifyArgs(args);
+  console.log(query, 'inprodbb')
   var foundPlayers = new Promise((resolve, reject) => {
       PlayerMongo.find(query, projections,(err, players) => {
           err ? reject(err)
